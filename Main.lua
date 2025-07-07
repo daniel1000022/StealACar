@@ -1,3 +1,32 @@
+local loadingGui = Instance.new("ScreenGui")
+loadingGui.Name = "LoadingGUI"
+loadingGui.ResetOnSpawn = false
+loadingGui.IgnoreGuiInset = true
+loadingGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0.4, 0, 0.1, 0)
+loadingFrame.Position = UDim2.new(0.3, 0, 0.45, 0)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+loadingFrame.BorderSizePixel = 0
+loadingFrame.Parent = loadingGui
+
+local loadingLabel = Instance.new("TextLabel")
+loadingLabel.Size = UDim2.new(1, 0, 1, 0)
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.Text = "Downloading Resources..."
+loadingLabel.TextColor3 = Color3.new(1, 1, 1)
+loadingLabel.Font = Enum.Font.SourceSansBold
+loadingLabel.TextSize = 22
+loadingLabel.Parent = loadingFrame
+
+local autoLockSource = ""
+local success, err = pcall(function()
+    autoLockSource = game:HttpGet("https://raw.githubusercontent.com/daniel1000022/StealACar/main/Scripts/CloseGate.lua", true)
+end)
+
+loadingGui:Destroy()
+
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MovableGUI"
 screenGui.ResetOnSpawn = false
@@ -104,7 +133,7 @@ lockToggleButton.MouseButton1Click:Connect(function()
         autoLockThread = task.spawn(function()
             while autoLockEnabled do
                 local delay = tonumber(lockWaitTextBox.Text) or 10
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/daniel1000022/StealACar/main/Scripts/CloseGate.lua", true))()
+                loadstring(autoLockSource)()
                 wait(delay)
             end
         end)
@@ -117,4 +146,3 @@ local function cleanUp()
 end
 
 closeButton.MouseButton1Click:Connect(cleanUp)
-
